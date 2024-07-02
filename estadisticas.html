@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8"> <!-- Especifica el conjunto de caracteres utilizado -->
+        <title>Estadísticas | Mueblería</title> <!-- Título de la página -->
+        
+        <!-- Incluye el archivo estadistica.js -->
+        <script src="dominio/estadistica.js"></script> 
+        <!-- Incluye el archivo memoria.js -->
+        <script src="dominio/memoria.js"></script> 
+        <!-- Incluye el archivo de estilos estilo.css -->
+        <link rel="stylesheet" href="css/estilo.css">
+    </head>
+  
+    <!-- Ejecuta la función inicio() del objeto estadistica cuando se carga la página -->
+    <body onload="estadistica.inicio();">
+        <header>
+            <div class="enlaces_clientes">
+                <a href="index.html">Inicio</a>
+                <a href="muebles.html">Muebles</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="ventas.html">Ventas</a>
+                <a href="clientes.html">Clientes</a>
+            </div>
+        </header>
+        <section class="section"> <!-- Centra el contenido dentro de esta etiqueta -->
+            <div class="logo"> <!-- Contenedor para el título -->
+                <h2>Estadística de ventas</h2> <!-- Título de la sección -->
+            </div>
+            <form id="dep"> <!-- Define un formulario con el id 'dep' -->
+                
+                <section> <!-- Sección para los botones -->
+                    <div class="botones"> <!-- Contenedor para los botones -->
+                        <!-- Botón para mostrar el total recaudado, llama a la función totalRecaudado() de estadistica al hacer clic -->
+                        <button type="button" class="btn_total_recaudado" onclick="estadistica.totalRecaudado()">Total Recaudado</button>
+                        <!-- Botón para listar los muebles con stock, llama a la función listarMueblesConStock() de estadistica al hacer clic -->
+                        <button type="button" class="btn_muebles_stock" onclick="estadistica.listarMueblesConStock()">Muebles con Stock</button>
+                        <!-- Botón para mostrar el mueble más vendido, llama a la función muebleMasVendido() de estadistica al hacer clic -->
+                        <button type="button" class="btn_muebles_mas_vendidos" onclick="estadistica.muebleMasVendido()">Mueble(s) Más Vendido(s)</button>
+                    </div>
+                </section>
+            </form>
+            <div class="listado"> <!-- Contenedor para la lista de resultados -->
+                <!-- Elemento select para mostrar los resultados, con tamaño 8 -->
+                <select id="lista" size="8"></select>
+            </div>
+        </section>
+    </body>
+</html>

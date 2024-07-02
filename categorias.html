@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías | Mueblería</title>
+    
+    <!-- Incluye el archivo categoria.js -->
+    <script src="dominio/categoria.js"></script>
+    <!-- Incluye el archivo memoria.js -->
+    <script src="dominio/memoria.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body onload="categoria.inicio()">
+    <header>
+        <div class="enlaces_categorias">
+            <a href="index.html">Inicio</a>
+            <a href="muebles.html">Muebles</a>
+            <a href="categorias.html">categorias</a>
+            <a href="ventas.html">Ventas</a>
+            <a href="estadisticas.html">Estadisticas</a>
+        </div>
+    </header>
+    <main>
+        <form id="form">
+            <label for="codigo">Codigo</label>
+            <input type="text" name="" id="codigo">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="" id="nombre">
+            <div class="botones"> <!-- Contenedor para los botones -->
+                <!-- Botón para agregar un categoria, llama a la función agregar() de categoria al hacer clic -->
+                <button type="button" class="btn_agregar" onclick="categoria.agregar()">Agregar</button>
+                <!-- Botón para modificar un categoria, llama a la función modificar() de categoria al hacer clic -->
+                <button type="button" class="btn_modificar" onclick="categoria.modificar()">Modificar</button>
+                <!-- Botón para eliminar un categoria, llama a la función eliminar() de categoria al hacer clic -->
+                <button type="button" class="btn_eliminar" onclick="categoria.eliminar()">Eliminar</button>
+                <!-- Botón para limpiar las cajas de entrada, llama a la función inicializar() de categoria al hacer clic -->
+                <button type="button" class="btn_limpiar" onclick="categoria.inicializar()">Limpiar cajas</button>
+            </div>
+        </form>
+        <div class="listado"> <!-- Contenedor para la lista de resultados -->
+            <!-- Elemento select para mostrar los resultados, con tamaño 8, llama a la función seleccionar() de categoria al cambiar -->
+            <select id="lista" size="8" onchange="categoria.seleccionar()"></select>
+        </div>
+
+
+        </form>
+
+    </main>
+</body>
+</html>
