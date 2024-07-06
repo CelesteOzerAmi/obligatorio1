@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes | Mueblería</title>
-    <!-- Incluye el archivo cliente.js -->
     <script src="dominio/cliente.js"></script>
-    <!-- Incluye el archivo memoria.js -->
     <script src="dominio/memoria.js"></script>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
@@ -35,20 +33,25 @@
             <input type="text" name="" id="telefono">
             <label for="direccion">Direccion</label>
             <input type="text" name="" id="direccion">
-            <div class="botones"> <!-- Contenedor para los botones -->
-                <!-- Botón para agregar un cliente, llama a la función agregar() de cliente al hacer clic -->
+            <div class="botones"> 
+
                 <button type="button" class="btn_agregar" onclick="cliente.agregar()">Agregar</button>
-                <!-- Botón para modificar un cliente, llama a la función modificar() de cliente al hacer clic -->
+
                 <button type="button" class="btn_modificar" onclick="cliente.modificar()">Modificar</button>
-                <!-- Botón para eliminar un cliente, llama a la función eliminar() de cliente al hacer clic -->
+
                 <button type="button" class="btn_eliminar" onclick="cliente.eliminar()">Eliminar</button>
-                <!-- Botón para limpiar las cajas de entrada, llama a la función inicializar() de cliente al hacer clic -->
+
                 <button type="button" class="btn_limpiar" onclick="cliente.inicializar()">Limpiar cajas</button>
             </div>
         </form>
-        <div class="listado"> <!-- Contenedor para la lista de resultados -->
-            <!-- Elemento select para mostrar los resultados, con tamaño 8, llama a la función seleccionar() de cliente al cambiar -->
+        <div class="listado"> 
+
             <select id="lista" size="8" onchange="cliente.seleccionar()"></select>
+        </div>
+
+        <button  onclick="cliente.listarVentas()">Listar ventas por cliente</button>
+        <div>
+            <select id="ventas" size="10"></select>
         </div>
     </main>
 </body>

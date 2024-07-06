@@ -37,8 +37,8 @@ const categoria = {
     agregar: function () {
 
         // se guardan los valores ingresadas en cada campo
-        let codigo = parseInt(document.getElementById("codigo").value);
-        let nombre = document.getElementById("nombre").value;
+        let codigo = parseInt(document.getElementById('codigo').value);
+        let nombre = document.getElementById('nombre').value;
 
 
         // se itera el array de categorias para validar que el código no sea reutilizado
@@ -55,6 +55,9 @@ const categoria = {
             document.getElementById("nombre").focus();
             return
         };
+
+        // mensaje de confirmación
+        alert("Categoría ingresada con éxito!");
 
         // se crea un objeto categoria con los datos de las variables
         const unaCategoria = this.crear(codigo, nombre);
@@ -88,7 +91,7 @@ const categoria = {
             // se actualizan los valores
             if (objCategoria.codigo == codigo) {
 
-                objCategoria.nombre = document.getElementById("nombre").value;
+                objCategoria.nombre = document.getElementById('nombre').value;
 
                 // valida que se ingrese el nombre
                 if (objCategoria.nombre == "") {
@@ -96,14 +99,18 @@ const categoria = {
                     document.getElementById("nombre").focus();
                     return
                 };
+                
+                // mensaje de confirmación
+                alert("Categoría modificada con éxito!");
             };
         };
+
 
         // se reinicia el listado
         this.listar();
 
         // se actualiza la memoria
-        memoria.escribir("categorias", this.categorias);
+        memoria.escribir('categorias', this.categorias);
 
         // se reinicia el formulario
         this.inicializar();
@@ -114,7 +121,7 @@ const categoria = {
     eliminar: function () {
 
         // se toma el código ingresada en el formulario
-        let codigo = parseInt(document.getElementById("codigo").value);
+        let codigo = document.getElementById("codigo").value;
 
         // se inicializa la variable pos para guardar la posicion de la categoría a eliminar
         let pos = -1;
@@ -131,9 +138,12 @@ const categoria = {
 
         // si la posición es mayor a -1, se elimina el categoria 
         if (pos >= 0) {
-            this.categorias.splice(pos, 1)
+            this.categorias.splice(pos, 1);
+            
+            // mensaje de confirmación
+            alert("Categoría eliminada con éxito!");
         } else {
-            alert("código incorrecto")
+            alert("Seleccione la categoría a eliminar")
         };
 
 
@@ -152,7 +162,7 @@ const categoria = {
     listar: function () {
 
         // se toma el elemento select
-        let lista = document.getElementById("lista").options;
+        let lista = document.getElementById('lista').options;
 
         // se eliminan los elementos existentes
         lista.length = 0;
@@ -161,7 +171,7 @@ const categoria = {
         // como una nueva opción en el select 
         for (let objCategoria of this.categorias) {
 
-            let texto = "Código: " + objCategoria.codigo + " | Nombre: "       +
+            let texto = "Código: " + objCategoria.codigo + " | Nombre: " +
                 objCategoria.nombre;
 
             let elemento = new Option(texto, objCategoria.codigo);
@@ -174,13 +184,13 @@ const categoria = {
     inicializar: function () {
 
         // reinicia el formulario
-        document.getElementById("form").reset();
+        document.getElementById('form').reset();
 
         // asigna el próximo código
-        document.getElementById("codigo").value = this.proximoId;
+        document.getElementById('codigo').value = this.proximoId;
 
         // focaliza el campo nombre
-        document.getElementById("nombre").focus()
+        document.getElementById('nombre').focus()
     },
 
 
@@ -199,7 +209,7 @@ const categoria = {
     seleccionar: function () {
 
         // se toma el código de la categoría seleccionado desde el select
-        let codigo = document.getElementById('lista').value;
+        let codigo = parseInt(document.getElementById('lista').value);
 
         // se itera sobre el arreglo para encontrar el categoria
         for (let objCategoria of this.categorias) {
@@ -207,8 +217,8 @@ const categoria = {
             // si el codigo de un categoria coincide con el seleccionado,
             // se completan los campos del formulario con los datos de la categoría
             if (objCategoria.codigo == codigo) {
-                document.getElementById("codigo").value    = objCategoria.codigo;
-                document.getElementById("nombre").value    = objCategoria.nombre;
+                document.getElementById('codigo').value = objCategoria.codigo;
+                document.getElementById('nombre').value = objCategoria.nombre;
             }
         }
     }

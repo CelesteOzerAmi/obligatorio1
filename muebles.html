@@ -2,19 +2,16 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8"> <!-- Especifica el conjunto de caracteres utilizado -->
-    <title>Muebles | Mueblería</title> <!-- Título de la página -->
+    <meta charset="utf-8"> 
+    <title>Muebles | Mueblería</title> 
 
-    <!-- Incluye el archivo mueble.js -->
     <script src="dominio/mueble.js"></script>
-    <!-- Incluye el archivo memoria.js -->
+
     <script src="dominio/memoria.js"></script>
 
-    <!-- Incluye el archivo de estilos estilo.css -->
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 
-<!-- Ejecuta la función inicio() del objeto mueble cuando se carga la página -->
 
 <body onload="mueble.inicio()">
     <header>
@@ -26,41 +23,44 @@
             <a href="estadisticas.html">Estadisticas</a>
         </div>
     </header>
-    <section class="section"> <!-- Centra el contenido dentro de esta etiqueta -->
-
-        <form id="dep" class="muebles_form"> <!-- Define un formulario con el id 'dep' -->
-            <!-- Enlaces de navegación a otras páginas -->
-            <div class="logo"> <!-- Contenedor para el título -->
-                <h2>Mueblería Castro</h2> <!-- Título de la sección -->
-            </div>
-            <section> <!-- Sección para los campos y botones -->
-                <div class="campos"> <!-- Contenedor para los campos de entrada -->
-                    <label>Código</label> <!-- Etiqueta para el campo de código -->
+    <section class="section">
+        <div class="logo">
+            <h2>Mueblería</h2>
+        </div>
+        <form id="form" class="muebles_form">
+            <section>
+                <div class="campos">
+                    <label>Código</label>
                     <input type="text" id="codigo" class="desactivado" disabled>
-                    <!-- Campo de entrada desactivado para el código -->
-                    <label>Nombre</label> <!-- Etiqueta para el campo de nombre -->
-                    <input type="text" id="nombre"> <!-- Campo de entrada para el nombre -->
-                    <label>Descripción</label> <!-- Etiqueta para el campo de descripción -->
-                    <textarea rows="3" id="descripcion"></textarea> <!-- Área de texto para la descripción -->
-                    <label>Precio</label> <!-- Etiqueta para el campo de precio -->
-                    <input type="text" id="precio"> <!-- Campo de entrada para el precio -->
-                    <label>Stock</label> <!-- Etiqueta para el campo de stock -->
-                    <input type="text" id="stock"> <!-- Campo de entrada para el stock -->
+
+                    <label>Nombre</label>
+                    <input type="text" id="nombre">
+
+                    <label>Categoría</label>
+                    <select id="categoria"></select>
+
+                    <label>Descripción</label>
+                    <textarea rows="3" id="descripcion"></textarea>
+
+                    <label>Precio</label>
+                    <input type="text" id="precio">
+
+                    <label>Stock</label>
+                    <input type="text" id="stock">
                 </div>
-                <div class="botones"> <!-- Contenedor para los botones -->
-                    <!-- Botón para agregar un mueble, llama a la función agregar() de mueble al hacer clic -->
+                <div class="botones">
+
                     <button type="button" class="btn_agregar" onclick="mueble.agregar()">Agregar</button>
-                    <!-- Botón para modificar un mueble, llama a la función modificar() de mueble al hacer clic -->
+
                     <button type="button" class="btn_modificar" onclick="mueble.modificar()">Modificar</button>
-                    <!-- Botón para eliminar un mueble, llama a la función eliminar() de mueble al hacer clic -->
+
                     <button type="button" class="btn_eliminar" onclick="mueble.eliminar()">Eliminar</button>
-                    <!-- Botón para limpiar las cajas de entrada, llama a la función inicializar() de mueble al hacer clic -->
+
                     <button type="button" class="btn_limpiar" onclick="mueble.inicializar()">Limpiar cajas</button>
                 </div>
             </section>
         </form>
-        <div class="listado"> <!-- Contenedor para la lista de resultados -->
-            <!-- Elemento select para mostrar los resultados, con tamaño 8, llama a la función seleccionar() de mueble al cambiar -->
+        <div class="listado">
             <select id="lista" size="8" onchange="mueble.seleccionar()"></select>
         </div>
     </section>

@@ -1,44 +1,65 @@
 const venta = {
-    // Función de inicio del objeto venta
+    // método de inicio del objeto venta
     inicio: function () {
-        // Lee la lista de ventas desde la memoria
+        // lee la lista de ventas desde la memoria
         this.ventas = memoria.leer('ventas');
 
-        // Lee la lista de muebles desde la memoria
+        // lee la lista de muebles desde la memoria
         this.muebles = memoria.leer('muebles');
 
-        // Lee el próximo ID de venta desde la memoria y lo inicializa en 1 si es menor que 1
+        // lee el array de clientes desde la memoria
+        this.clientes = memoria.leer('clientes');
+
+        // lee el array de categorias desde la memoria
+        this.categorias = memoria.leer('categorias');
+
+        // lee el próximo ID de venta desde la memoria y lo inicializa en 1 si es menor que 1
         let id = memoria.leer('proximoId');
         if (id < 1) {
             memoria.escribir('proximoId', 1);
         }
         this.proximoId = memoria.leer('proximoId');
 
-        // Inicializa el objeto mueble seleccionado como vacío
+        // inicializa el objeto mueble seleccionado como vacío
         this.muebleSel = {};
 
-        // Inicializa el formulario y lista las ventas
+        // inicializa el formulario y lista las ventas
         this.inicializar();
         this.listar();
+
+        // se listan los muebles
+        this.listarMuebles();
+
+        // se listan las categorias
+        this.listarCategorias();
+
+        // se listan los clientes
+        this.listarClientes();
     },
 
-    // Función para crear un objeto venta con los datos proporcionados
-    crear: function (codigo, mueble, cantidad, total) {
+    // método para crear un objeto venta con los datos proporcionados
+    crear: function (codigo, fecha, cliente, mueble, cantidad, total) {
         return {
-            codigo: codigo,
-            mueble: mueble,
+            codigo:   codigo,
+            fecha:    fecha,
+            cliente:  cliente,
+            mueble:   mueble,
             cantidad: cantidad,
-            total: total
+            total:    total
         };
     },
 
-    // Función para agregar una nueva venta
+    // método para agregar una nueva venta
     agregar: function () {
-        // Obtiene los valores de los campos del formulario
-        let codigo = parseInt(document.getElementById('codigo').value);
-        let mueble = document.getElementById('mueble').value;
-        let cantidad = parseInt(document.getElementById('cantidad').value);
-        let total = parseInt(document.getElementById('total').value);
+
+        // toma los valores de los campos del formulario
+        let codigo         = parseInt(document.getElementById('codigo').value);
+        let fecha          = document.getElementById('fecha').value;
+        let codigo_cliente = parseInt(document.getElementById('cliente').value);
+        let categoria      = document.getElementById('categoria').value;
+        let mueble         = document.getElementById('mueble').value;
+        let cantidad       = parseInt(document.getElementById('cantidad').value);
+        let total          = parseInt(document.getElementById('total').value);
 
 
         // valida que el código de venta no sea reutilizado
@@ -48,226 +69,275 @@ const venta = {
                 alert("Venta ya ingresada");
                 return
             };
-        }
+        };
 
-        // Valida que se haya ingresado el código del mueble
+        // valida que se haya ingresado el código del mueble
+        if (!codigo_cliente) {
+            alert("Ingrese el cliente");
+            document.getElementById('cliente').focus();
+            return;
+        };
+
+        // valida que se haya ingresado el código del mueble
+        if (categoria == "") {
+            alert("Ingrese la categoría");
+            document.getElementById('categoria').focus();
+            return;
+        };
+
+        // valida que se haya ingresado el código del mueble
         if (mueble == "") {
-            alert("Ingrese el código del mueble");
+            alert("Ingrese el mueble");
             document.getElementById('mueble').focus();
             return;
-        }
+        };
 
-        // Valida que la cantidad sea un número
+        // valida que la cantidad sea un número
         if (isNaN(cantidad)) {
             alert("Ingrese la cantidad");
             document.getElementById('cantidad').focus();
             return;
-        }
+        };
 
 
-        // Valida el stock del mueble seleccionado antes de realizar la venta
+        // valida el stock del mueble seleccionado antes de realizar la venta
         if (!this.validarStock()) {
             document.getElementById('cantidad').focus();
             return;
-        }
+        };
 
-        // Crea un objeto venta con los valores obtenidos
-        const unaVenta = this.crear(codigo, mueble, cantidad, total);
+        // guarda el objeto cliente 
+        let unCliente = this.buscarCliente(codigo_cliente);
 
-        // Agrega la venta al arreglo de ventas
+        // crea un objeto venta con los valores obtenidos
+        const unaVenta = this.crear(codigo, fecha, unCliente, {...this.muebleSel}, cantidad, total);
+
+        // agrega la venta al arreglo de ventas
         this.ventas.push(unaVenta);
 
-        // Guarda el arreglo actualizado en la memoria
+        // mensaje de confirmación
+        alert("Venta ingresada con éxito");
+
+        // guarda el arreglo actualizado en la memoria
         memoria.escribir('ventas', this.ventas);
 
-        // Actualiza el stock del mueble vendido y lista nuevamente las ventas
+        // actualiza el stock del mueble vendido y lista nuevamente las ventas
         this.actualizarStock(mueble, cantidad, 'VENTA');
         this.listar();
 
-        // Incrementa el ID para la próxima venta y reinicia el formulario
+        // incrementa el código para la próxima venta y reinicia el formulario
         this.incrementoId();
         this.inicializar();
     },
 
-    // Función para modificar una venta existente
-    modificar: function () {
-        // Obtiene el código de la venta a modificar desde el formulario
-        let codigo = parseInt(document.getElementById('codigo').value);
 
-        let codMueble = 0;
-        let cantMueble = 0;
-
-        // Valida que el código no esté vacío
-        if (!codigo) {
-            alert("Seleccione la venta");
-            return;
-        }
-
-        // Itera sobre el arreglo de ventas y actualiza los valores de la venta con el código correspondiente
-        for (let objVenta of this.ventas) {
-            if (objVenta.codigo == codigo) {
-
-                // se guarda en variable "cant" la cantidad de la venta antes de modificarla
-                let cant = objVenta.cantidad;
-
-                objVenta.mueble = document.getElementById('mueble').value;
-                objVenta.cantidad = parseInt(document.getElementById('cantidad').value);
-                objVenta.total = parseInt(document.getElementById('total').value);
-
-                codMueble = objVenta.mueble;
-                cantMueble = objVenta.cantidad;
-                
-
-                // si la cantidad de la venta aumenta, el stock se actualiza como VENTA
-                if (cant < document.getElementById('cantidad').value) {
-                    cantMueble = cantMueble - cant;
-                    this.actualizarStock(codMueble, cantMueble, 'VENTA');
-
-                // si la cantidad de la venta disminuye, el stock se actualiza como DEVOLUCION
-                } else if (cant > document.getElementById('cantidad').value) {
-                    cantMueble = cant - cantMueble;
-                    this.actualizarStock(codMueble, cantMueble, 'DEVOLUCION');
-                }
-
-            }
-        }
-
-        // Vuelve a listar las ventas actualizadas
-        this.listar();
-
-        // Guarda el arreglo actualizado en la memoria
-        memoria.escribir('ventas', this.ventas);
-
-        // Reinicia el formulario
-        this.inicializar();
-    },
-
-    // Función para eliminar una venta
+    // función para eliminar una venta
     eliminar: function () {
-        // Obtiene el código de la venta a eliminar desde el formulario
+
+        // toma el código de la venta a eliminar desde el formulario
         let codigo = document.getElementById('codigo').value;
 
-        // Variables para almacenar la posición de la venta, el código del mueble y la cantidad de la venta
+        // almacena la posición de la venta, el código del mueble y la cantidad de la venta
         let posicion = -1;
         let codMueble;
         let cantMueble;
 
-        // Itera sobre el arreglo de ventas para encontrar la venta con el código correspondiente
+        // itera sobre el arreglo de ventas para encontrar la venta con el código correspondiente
         for (let i = 0; i < this.ventas.length; i++) {
             if (this.ventas[i].codigo == codigo) {
-                posicion = i;
-                codMueble = this.ventas[i].mueble;
+                posicion   = i;
+                codMueble  = this.ventas[i].mueble;
                 cantMueble = this.ventas[i].cantidad;
             }
         }
 
-        // Si se encontró la venta, la elimina del arreglo y actualiza el stock del mueble correspondiente
+        // si se encontró la venta, la elimina del arreglo y actualiza el stock del mueble correspondiente
         if (posicion >= 0) {
             this.ventas.splice(posicion, 1);
             this.actualizarStock(codMueble, cantMueble, 'DEVOLUCION');
+            alert("Venta eliminada con éxito");
+
         } else {
             alert("Codigo incorrecto");
         }
 
-        // Lista nuevamente las ventas actualizadas
+        // lista nuevamente las ventas actualizadas
         this.listar();
 
-        // Guarda el arreglo actualizado en la memoria
+        // guarda el arreglo actualizado en la memoria
         memoria.escribir('ventas', this.ventas);
 
-        // Reinicia el formulario
+        // reinicia el formulario
         this.inicializar();
     },
 
-    // función para limpiar las cajas
-    limpiar: function () {
 
-        document.getElementById("dep").reset();
-        document.getElementById("codigo").value = this.proximoId;
-
-    },
-
-    // Función para listar las ventas en el elemento select del HTML
+    // método para listar las ventas en el elemento select del HTML
     listar: function () {
-        // Obtiene el elemento select del HTML
+        // tomo el elemento select del HTML
         let lista = document.getElementById('lista').options;
-        // Elimina todos los elementos actuales del select
+        // se reinicia el select
         lista.length = 0;
 
-        // Itera sobre el arreglo de ventas y agrega cada venta como una opción en el select
+        // itero sobre el arreglo de ventas y agrega cada venta como una opción en el select
         for (let objVenta of this.ventas) {
-            let texto = 'ID: ' + objVenta.codigo + ' - Mueble: ' + objVenta.mueble + ' - Cantidad: ' + objVenta.cantidad + ' - Total: ' + objVenta.total;
+            let texto = 'Código: ' + objVenta.codigo         + ' | Fecha: '  + objVenta.fecha +
+                ' | Cliente: '     + objVenta.cliente.nombre + ' | Mueble: ' + objVenta.mueble.nombre +
+                ' | Cantidad: '    + objVenta.cantidad       + ' | Total: $' + objVenta.total;
             let elemento = new Option(texto, objVenta.codigo);
             lista.add(elemento);
         }
     },
 
-    // Función para inicializar el formulario de ingreso de ventas
-    inicializar: function () {
-        // Asigna el próximo ID de venta al campo de código y establece el foco en el campo de mueble
-        document.getElementById('codigo').value = this.proximoId;
-        document.getElementById('mueble').focus();
-    },
 
-    // Función para incrementar el ID de la próxima venta
-    incrementoId: function () {
-        // Incrementa el ID de la próxima venta
-        this.proximoId++;
-        // Guarda el nuevo ID en la memoria
-        memoria.escribir('proximoId', this.proximoId);
-    },
+    // método para listar los muebles 
+    listarMuebles: function () {
 
-    // Función para seleccionar una venta del select y llenar el formulario con sus datos
-    seleccionar: function () {
-        // Obtiene el código de la venta seleccionada desde el select
-        let codigo = document.getElementById('lista').value;
-        // Itera sobre el arreglo de ventas para encontrar la venta con el código correspondiente
-        for (let objVenta of this.ventas) {
-            if (objVenta.codigo == codigo) {
-                // Llena los campos del formulario con los datos de la venta seleccionada
-                document.getElementById('codigo').value = objVenta.codigo;
-                document.getElementById('mueble').value = objVenta.mueble;
-                this.buscarMueble();
-                document.getElementById('cantidad').value = objVenta.cantidad;
-                this.calcularTotal();
+        // se toman las opciones del select muebles
+        let lista = document.getElementById('mueble').options;
+
+        let categoria = document.getElementById('categoria').value;
+
+        lista.length = 0;
+
+        let elementoVacio = new Option("Seleccione un mueble", "");
+
+        lista.add(elementoVacio);
+
+        for (let objMue of this.muebles) {
+
+            if (categoria != "") {
+
+                if (objMue.categoria.codigo == categoria) {
+                    let texto = objMue.nombre;
+
+                    let elemento = new Option(texto, objMue.codigo);
+
+                    lista.add(elemento)
+                }
             }
         }
     },
 
-    // Función para buscar el mueble seleccionado y mostrar sus detalles en el formulario
-    buscarMueble: function () {
-        // Obtiene el código del mueble desde el campo de mueble en el formulario
-        let codigo = document.getElementById('mueble').value;
-        // Itera sobre el arreglo de muebles para encontrar el mueble con el código correspondiente
-        for (let objM of this.muebles) {
-            if (objM.codigo == codigo) {
-                // Asigna el objeto mueble encontrado a la propiedad muebleSel y muestra sus detalles
-                this.muebleSel = objM;
-                document.getElementById('datos').value = objM.nombre + " - $" + objM.precio;
-                return
-            } else if (codigo != objM.codigo) {
-                document.getElementById('datos').value = "No se encontró el código de mueble.";
-            };
 
-        };
+    // método para listar las categorías
+    listarCategorias: function () {
 
+        let lista = document.getElementById('categoria').options;
+
+        lista.length = 0;
+
+        let elementoVacio = new Option("Seleccione una categoría", "");
+
+        lista.add(elementoVacio);
+
+        for (let objCat of this.categorias) {
+
+            let elemento = new Option(objCat.nombre, objCat.codigo);
+            lista.add(elemento)
+        }
     },
 
-    // Función para calcular el total de la venta en base a la cantidad ingresada y el precio del mueble seleccionado
+
+    // método para listar los clientes
+    listarClientes: function () {
+
+        let lista = document.getElementById('cliente').options;
+
+        lista.length = 0;
+
+        let elementoVacio = new Option("Seleccione un cliente", "");
+
+        lista.add(elementoVacio);
+
+        for (let objCli of this.clientes) {
+
+            let elemento = new Option(objCli.nombre, objCli.codigo);
+            lista.add(elemento)
+        }
+    },
+
+
+    // método para inicializar el formulario de ingreso de ventas
+    inicializar: function () {
+
+        // reinicia el formulario
+        document.getElementById('form').reset();
+
+        // asigna el próximo código de venta al campo de código y establece el foco en el campo de mueble
+        document.getElementById('codigo').value = this.proximoId;
+        document.getElementById('fecha').focus();
+    },
+
+    // método para incrementar el código de la próxima venta
+    incrementoId: function () {
+
+        // incrementa el código de la próxima venta
+        this.proximoId++;
+
+        // guarda el nuevo código en la memoria
+        memoria.escribir('proximoId', this.proximoId);
+    },
+
+    // método para seleccionar una venta del select y llenar el formulario con sus datos
+    seleccionar: function () {
+
+        // toma el código de la venta seleccionada desde el select
+        let codigo = parseInt(document.getElementById('lista').value);
+
+        // itera sobre el arreglo de ventas para encontrar la venta con el código correspondiente
+        for (let objVenta of this.ventas) {
+            if (objVenta.codigo == codigo) {
+
+                // completa los campos del formulario con los datos de la venta seleccionada
+                document.getElementById('codigo').value    = objVenta.codigo;
+                document.getElementById('fecha').value     = objVenta.fecha;
+                document.getElementById('cliente').value   = objVenta.cliente.codigo;
+                document.getElementById('categoria').value = objVenta.mueble.categoria.codigo;
+                document.getElementById('mueble').value    = objVenta.mueble.codigo;
+                this.buscarMueble();
+                document.getElementById('cantidad').value  = objVenta.cantidad;
+                document.getElementById('total').value     = objVenta.total;
+            }
+        }
+    },
+
+    // método para buscar el mueble seleccionado y mostrar sus detalles en el formulario
+    buscarMueble: function () {
+        // toma el código del mueble desde el campo de mueble en el formulario
+        let codigo = parseInt(document.getElementById('mueble').value);
+        // itera sobre el arreglo de muebles para encontrar el mueble con el código correspondiente
+        for (let objM of this.muebles) {
+            if (objM.codigo == codigo) {
+
+                // asigna el objeto mueble encontrado a la propiedad muebleSel y muestra sus detalles
+                this.muebleSel = objM;
+                document.getElementById('datos').value = objM.descripcion;
+            };
+        };
+    },
+
+    // método para buscar un cliente
+    buscarCliente: function (codigo) {
+
+        for (let objCli of this.clientes) {
+            if (objCli.codigo == codigo) {
+                return objCli;
+            }
+        }
+        return null;
+    },
+
+    // método para calcular el total de la venta en base a la cantidad ingresada y el precio del mueble seleccionado
     calcularTotal: function () {
         let cantidad = document.getElementById('cantidad').value;
-        let total = cantidad * this.muebleSel.precio;
+        let total    = cantidad * this.muebleSel.precio;
         document.getElementById('total').value = total;
     },
 
-    // Función para validar si la cantidad ingresada para la venta no supera el stock disponible del mueble seleccionado
+    // método para validar si la cantidad ingresada para la venta no supera el stock disponible del mueble seleccionado
     validarStock: function () {
-        let cantidad = document.getElementById('cantidad').value;
-
-        // se valida que la cantidad no sea 0 o menos
-        if (cantidad <= 0) {
-            alert("Ingrese una cantidad");
-        };
+        let cantidad = parseInt(document.getElementById('cantidad').value);
 
         if (cantidad > this.muebleSel.stock) {
             alert('Stock insuficiente');
@@ -277,21 +347,41 @@ const venta = {
 
     },
 
-    // Función para actualizar el stock del mueble vendido o devuelto en la lista de muebles
+    // método para actualizar el stock del mueble vendido o devuelto en la lista de muebles
     actualizarStock: function (codMueble, cantidad, tipo) {
-        // Itera sobre el arreglo de muebles para encontrar el mueble con el código correspondiente
+        // itera sobre el arreglo de muebles para encontrar el mueble con el código correspondiente
         for (let objMueble of this.muebles) {
             if (objMueble.codigo == codMueble) {
 
-                // Actualiza el stock del mueble según el tipo de operación (VENTA o DEVOLUCION)
+                // actualiza el stock del mueble según el tipo de operación (VENTA o DEVOLUCION)
                 if (tipo == 'VENTA') {
                     objMueble.stock -= cantidad;
+                    objMueble.vendidos += cantidad;
                 } else {
                     objMueble.stock += cantidad;
+                    objMueble.vendidos -= cantidad;
                 }
             }
         }
-        // Guarda el arreglo actualizado de muebles en la memoria
+        // guarda el arreglo actualizado de muebles en la memoria
         memoria.escribir('muebles', this.muebles);
+    },
+
+    ordenar: function(atr){
+        this.ventas = this.ordenoBurbuja(this.ventas, atr);
+        this.listar();
+    },
+
+    ordenoBurbuja: function (array, att){
+        for (let i = 0; i < array.length - 1; i++) {
+            for (let j = 0; j < array.length - 1; j++) {
+              if (array[j][att] > array[j + 1][att]) {
+                let aux = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = aux;
+              }
+            }
+          }
+          return array;
     }
 };

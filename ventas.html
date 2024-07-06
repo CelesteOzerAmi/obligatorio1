@@ -5,16 +5,14 @@
     <meta charset="utf-8">
     <title>Muebleria Castro</title>
 
-    <!-- Incluye el archivo venta.js -->
     <script src="dominio/venta.js"></script>
-    <!-- Incluye el archivo memoria.js -->
+
     <script src="dominio/memoria.js"></script>
 
-    <!-- Incluye el archivo de estilos estilo.css -->
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 
-<body onload="venta.inicio()"> <!-- Ejecuta la función inicio() del objeto venta cuando se carga la página -->
+<body onload="venta.inicio()">
     <header>
         <div class="enlaces_ventas">
             <a href="index.html">Inicio</a>
@@ -24,47 +22,50 @@
             <a href="estadisticas.html">Estadísticas</a>
         </div>
     </header>
-    <section class="section"> <!-- Centra el contenido dentro de esta etiqueta -->
+    <section class="section">
 
-        <form id="dep" class="ventas_form"> <!-- Define un formulario con el id 'dep' -->
+        <form id="form" class="ventas_form">
 
-            <!-- Enlaces de navegación a otras páginas -->
-            <div class="logo"> <!-- Contenedor para el título -->
-
-                <h2>Ventas</h2> <!-- Título de la sección -->
+            <div class="logo">
+                <h2>Ventas</h2>
             </div>
-            <section> <!-- Sección para los campos y botones -->
+            <section>
 
-                <div class="campos" id="campos"> <!-- Contenedor para los campos de entrada -->
+                <div class="campos" id="campos">
 
-                    <label>Código de venta</label> <!-- Etiqueta para el campo de código -->
+                    <label>Código de venta</label>
                     <input type="text" id="codigo" class="desactivado" disabled>
-                    <!-- Campo de entrada desactivado para el código -->
-                    <label>Código de mueble</label> <!-- Etiqueta para el campo de mueble -->
-                    <input type="text" id="mueble"> <!-- Campo de entrada para el mueble -->
-                    <br> <!-- Salto de línea -->
-                    <input type="button" onclick="venta.buscarMueble()" value="Buscar">
-                    <!-- Botón para buscar el mueble, llama a la función buscarMueble() de venta -->
+
+                    <label>Fecha</label>
+                    <input type="date" id="fecha">
+
+                    <label for="cliente">Cliente</label>
+                    <select id="cliente"></select>
+
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" onchange="venta.listarMuebles()"></select>
+
+                    <label for="mueble">Mueble</label>
+                    <select id="mueble" onchange="venta.buscarMueble(), venta.calcularTotal()"></select>
+
                     <label for="datos">Detalle</label>
                     <input type="text" id="datos" disabled>
-                    <!-- Campo de texto desactivado para mostrar datos del medicamento -->
-                    <label>Cantidad</label> <!-- Etiqueta para el campo de cantidad -->
-                    <input type="text" id="cantidad" onchange="venta.validarStock(); venta.calcularTotal()">
-                    <!-- Campo de entrada para la cantidad, llama a las funciones validarStock() y calcularTotal() de venta al cambiar -->
-                    <label>Monto total ($)</label> <!-- Etiqueta para el campo de total -->
-                    <input type="text" id="total" disabled> <!-- Campo de texto desactivado para mostrar el total -->
+
+                    <label>Cantidad</label>
+                    <input type="text" id="cantidad" onchange="venta.validarStock(), venta.calcularTotal()">
+
+                    <label>Monto total ($)</label>
+                    <input type="text" id="total" disabled>
 
                 </div>
 
-                <div class="botones"> <!-- Contenedor para los botones -->
-                    <!-- Botón para agregar una venta, llama a la función agregar() de venta al hacer clic -->
+                <div class="botones">
+
                     <button type="button" class="btn_agregar" onclick="venta.agregar()">Agregar</button>
-                    <!-- Botón para modificar una venta, llama a la función modificar() de venta al hacer clic -->
-                    <button type="button" class="btn_modificar" onclick="venta.modificar()">Modificar</button>
-                    <!-- Botón para eliminar una venta, llama a la función eliminar() de venta al hacer clic -->
+
                     <button type="button" class="btn_eliminar" onclick="venta.eliminar()">Eliminar</button>
-                    <!-- Botón para limpiar las cajas de entrada, llama a la función limpiar() de venta al hacer clic -->
-                    <button type="button" class="btn_limpiar" onclick="venta.limpiar()">Limpiar cajas</button>
+
+                    <button type="button" class="btn_limpiar" onclick="venta.inicializar()">Limpiar cajas</button>
 
                 </div>
 
@@ -72,10 +73,12 @@
 
         </form>
 
-        <div class="listado"> <!-- Contenedor para la lista de resultados -->
-            <!-- Elemento select para mostrar los resultados, con tamaño 8, llama a la función seleccionar() de venta al cambiar -->
-            <select id="lista" size="8" onchange="venta.seleccionar()"></select>
+        <div class="listado">
 
+            <select id="lista" size="8" onchange="venta.seleccionar()"></select>
+            <br>
+            <button onclick="venta.ordenar('codigo')">Ordenar por Código</button>
+            <button onclick="venta.ordenar('fecha')">Ordenar por Fecha</button>
         </div>
 
     </section>

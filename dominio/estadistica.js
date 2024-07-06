@@ -1,164 +1,160 @@
 const estadistica = {
 
-    // Método de inicio para cargar ventas, muebles y preparar la lista
+    // método de inicio para cargar ventas, muebles y preparar la lista
     inicio: function () {
-        // Leer las ventas desde la memoria y asignarlas a this.ventas
+        // lee las ventas desde la memoria y asignarlas a this.ventas
         this.ventas = memoria.leer('ventas');
 
-        // Leer los muebles desde la memoria y asignarlos a this.muebles
+        // lee los muebles desde la memoria y asignarlos a this.muebles
         this.muebles = memoria.leer('muebles');
 
-        // Obtener el elemento con id 'lista' y asignarlo a this.lista
+        // toma el elemento con id 'lista' y lo asigna a this.lista
         this.lista = document.getElementById('lista');
 
-        // Llamar al método limpiarLista para vaciar la lista
+        this.inicializar();
+        // llama al método limpiarLista para vaciar la lista
         this.limpiarLista();
 
-        // Llamar al método totalRecaudado para mostrar el total recaudado
+        // llama al método totalRecaudado para mostrar el total recaudado
         this.totalRecaudado();
 
-        // Llamar al método listarMueblesConStock para mostrar los muebles con stock
+        // llama al método listarMueblesConStock para mostrar los muebles con stock
         this.listarMueblesConStock();
 
-        // Llamar al método muebleMasVendido para mostrar el mueble más vendido
+        // llama al método muebleMasVendido para mostrar el mueble más vendido
         this.muebleMasVendido();
+
+        // llama al método listarVentasPorFecha para ordenar las ventas por fecha
+        this.listarVentasPorFecha();
     },
 
-    // Método para limpiar la lista
+    // método para limpiar la lista
     limpiarLista: function () {
-        // Vaciar el contenido del elemento select
+        // vacía el contenido del elemento select
         this.lista.innerHTML = '';
     },
 
-    // Método para calcular y mostrar el total recaudado
+    // método para calcular y mostrar el total recaudado
     totalRecaudado: function () {
-        // Llamar al método limpiarLista para vaciar la lista
+        // llama al método limpiarLista para vaciar la lista
         this.limpiarLista();
 
-        // Inicializar la variable total a 0
+        // inicializa la variable total a 0
         let total = 0;
 
-        // Iterar sobre cada venta en this.ventas
+        // itera sobre cada venta en this.ventas
         for (let venta of this.ventas) {
-            // Sumar el total de cada venta a la variable total
+            // suma el total de cada venta a la variable total
             total += venta.total;
         }
 
-        // Crear un nuevo elemento Option con el texto del total recaudado
+        // crea un nuevo elemento Option con el texto del total recaudado
         let elemento = new Option("Total recaudado: $" + total, 0);
 
-        // Agregar la opción al elemento select
+        // agrega la opción al elemento select
         this.lista.add(elemento);
     },
 
-    // Método para listar los muebles que tienen stock disponible
+    // método para listar los muebles que tienen stock disponible
     listarMueblesConStock: function () {
-        // Llamar al método limpiarLista para vaciar la lista
+
+        // llama al método limpiarLista para vaciar la lista
         this.limpiarLista();
 
-        // Variable para verificar si hay muebles con stock
+        // variable para verificar si hay muebles con stock
         let tieneStock = false;
 
-        // Iterar sobre cada mueble en this.muebles
+        // itera sobre cada mueble
         for (let mueble of this.muebles) {
-            // Verificar si el mueble tiene stock disponible
-            if (mueble.stock > 0) {
-                // Crear el texto para la opción del select
-                let texto = 'ID: ' + mueble.codigo + ' - Nombre: ' + mueble.nombre + ' - Precio: $' + mueble.precio + ' - Stock: ' + mueble.stock;
 
-                // Crear un nuevo elemento Option con el texto del mueble
+            // verifica si el mueble tiene stock disponible
+            if (mueble.stock > 0) {
+
+                // crea el texto para la opción del select
+                let texto = 'Código: ' + mueble.codigo + ' | Nombre: ' + mueble.nombre + ' | Precio: $' + mueble.precio + ' | Stock: ' + mueble.stock;
+
+                // crea un nuevo elemento Option con el texto del mueble
                 let elemento = new Option(texto, mueble.codigo);
 
-                // Agregar la opción al elemento select
+                // agrega la opción al elemento select
                 this.lista.add(elemento);
 
-                // Establecer tieneStock a true porque hay al menos un mueble con stock
+                // establece tieneStock a true porque hay al menos un mueble con stock
                 tieneStock = true;
             }
         }
 
-        // Si no hay muebles con stock, agregar una opción indicando eso
+        // si no hay muebles con stock, agregar una opción para indicarlo
         if (!tieneStock) {
             let elemento = new Option("No hay muebles con stock disponible.", 0);
             this.lista.add(elemento);
         }
     },
 
-    // Método para encontrar y mostrar el mueble más vendido
+    // método para encontrar y mostrar el mueble más vendido
     muebleMasVendido: function () {
-        // Llamar al método limpiarLista para vaciar la lista
+        // llama al método limpiarLista para vaciar la lista
         this.limpiarLista();
 
-        // Objeto para contar las ventas por mueble
-        let ventasPorMueble = {};
+        // inicializa masVendido en 0
+        let masVendido = 0;
 
-        // Iterar sobre cada venta en this.ventas
-        for (let venta of this.ventas) {
+        for (let objM of this.muebles) {
 
-            // Si el mueble no está en ventasPorMueble, inicializar su contador a 0
-            if (!ventasPorMueble[venta.mueble]) {
-                ventasPorMueble[venta.mueble] = 0;
-            }
-            // Sumar la cantidad de la venta al contador del mueble
-            ventasPorMueble[venta.mueble] += venta.cantidad;
-        }
+            // por cada mueble, se evalúa la cantidad de ventas
+            if (objM.vendidos > masVendido) {
 
-        // Inicializar la variable maxVentas a 0 para encontrar el mueble más vendido
-        let maxVentas = 0;
+                // si la cantidad de ventas es mayor a masVendido, se guarda en masVendido
+                masVendido = objM.vendidos;
+                let texto = objM.nombre + " (" + objM.categoria.nombre +
+                    "), unidades vendidas: " + objM.vendidos;
 
-        // Inicializar un array para almacenar los muebles más vendidos
-        let mueblesMasVendidos = [];
+                // crea un nuevo elemento Option con el texto del total recaudado
+                let elemento = new Option(texto, "");
 
-        // se inicia variable para guardar el nombre del mueble con más ventas
-        let muebleNom;
-
-        // Iterar sobre cada mueble en ventasPorMueble
-        for (let mueble in ventasPorMueble) {
-
-            // Si las ventas del mueble actual son mayores que maxVentas
-            if (ventasPorMueble[mueble] > maxVentas) {
-                // Actualizar maxVentas con las ventas del mueble actual
-                maxVentas = ventasPorMueble[mueble];
-
-                // Reiniciar el array mueblesMasVendidos con el mueble actual
-                mueblesMasVendidos = {mueble};
-            } 
-            
-            if (ventasPorMueble[mueble] === maxVentas) {
-                // Agregar el mueble actual al array mueblesMasVendidos
-                mueblesMasVendidos = {mueble};
-                console.log(mueblesMasVendidos.mueble)
-            }
-
-        };
-
-
-        // se registra el nombre del mueble con más ventas 
-        for (let mueble of this.muebles) {
-            if (mueble.codigo == mueblesMasVendidos.mueble) {
-                muebleNom = mueble.nombre
-            }
-        };
-
-        // si no hay muebles vendidos, se indica en lista
-        if (mueblesMasVendidos.length == 0) {
-
-            let elemento = new Option("No hay ventas registradas.", 0);
-            this.lista.add(elemento);
-
-        // si hay un mueble más vendido, se añade un elemento a la lista indicando su nombre, código y cantidad de ventas. 
-        } else {
-            for (let mueble in mueblesMasVendidos) {
-
-                let texto = 'El producto más vendido es: ' + muebleNom + " (código " + mueblesMasVendidos.mueble + ")" + ' con ' + maxVentas + ' ventas.';
-
-                // Crear un nuevo elemento Option con el texto del mueble
-                let elemento = new Option(texto, mueble);
-
-                // Agregar la opción al elemento select
+                // agrega la opción al elemento select
                 this.lista.add(elemento);
-
             }
         }
-    }
-};
+
+    },
+
+    listarVentasPorFecha: function () {
+        let fecha = document.getElementById('fechaVenta').value;
+
+        let listado = document.getElementById('ventasporfecha').options;
+
+        listado.length = 0;
+
+        for (let objVenta of this.ventas) {
+            if (objVenta.fecha == fecha) {
+
+                let texto = objVenta.cantidad + " " + objVenta.mueble.nombre +
+                    " (" + objVenta.mueble.categoria.nombre + ") " + objVenta.cliente.nombre;
+
+                let elemento = new Option(texto);
+
+                listado.add(elemento);
+            }
+        };
+
+        if (listado.length == 0) {
+            let elemento = new Option("No se encontraron datos para la fecha seleccionada");
+            listado.add(elemento)
+        }
+    },
+
+    inicializar: function () {
+        let fechaHoy = new Date();
+        let dia = fechaHoy.getDate();
+        dia = dia.toString();
+        dia = (dia.length == 1) ? "0" + dia : dia;
+        let mes = fechaHoy.getMonth() + 1;
+        mes = mes.toString();
+        mes = (mes.length == 1) ? "0" + mes : mes;
+        let fecha = fechaHoy.getFullYear() + "-" + mes + "-" + dia;
+
+        document.getElementById('fechaVenta').value = fecha;
+    },
+
+}

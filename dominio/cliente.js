@@ -5,6 +5,9 @@ const cliente = {
         // lee la lista de clientes desde la memoria
         this.clientes = memoria.leer('clientes');
 
+        // lee la lista de ventas desde la memoria
+        this.ventas = memoria.leer('ventas');
+
         // lee el próximo código de cliente desde la memoria
         let codigo = memoria.leer('proximoIdCliente');
 
@@ -84,6 +87,8 @@ const cliente = {
             return
         };
 
+        // mensaje de confirmación
+        alert("Cliente ingresado con éxito!");
 
         // se crea un objeto cliente con los datos de las variables
         const unCliente = this.crear(codigo, nombre, cedula, telefono, email, direccion);
@@ -92,7 +97,7 @@ const cliente = {
         this.clientes.push(unCliente);
 
         // se guarda la memoria actualizada
-        memoria.escribir("clientes", this.clientes);
+        memoria.escribir('clientes', this.clientes);
 
         // se listan nuevamente los clientes
         this.listar();
@@ -151,6 +156,8 @@ const cliente = {
                     return
                 };
 
+                // mensaje de confirmación
+                alert("Cliente modificado con éxito!");
             };
         };
 
@@ -186,7 +193,10 @@ const cliente = {
 
         // si la posición es mayor a -1, se elimina el cliente 
         if (pos >= 0) {
-            this.clientes.splice(pos, 1)
+            this.clientes.splice(pos, 1);
+            
+            // mensaje de confirmación
+            alert("Cliente eliminado con éxito")
         } else {
             alert("código incorrecto")
         };
@@ -226,18 +236,46 @@ const cliente = {
         }
     },
 
+    // método para listar las ventas por cliente
+    listarVentas: function () {
+        // tomo el select con id ventas desde el html
+        let lista = document.getElementById('ventas').options;
+
+        // reinicio la lista
+        lista.length = 0;
+
+        // se itera cada cliente para encontrar las ventas por cliente
+        for (let objC of this.clientes) {
+            for (let objV of this.ventas) {
+
+                // por cada venta del cliente, se añade un elemento a la lista
+                if (objV.cliente.codigo == objC.codigo) {
+
+                    let texto = "Cliente: " + objC.nombre        + " | Venta: " + objV.fecha + ", " +
+                    objV.cantidad     + " " + objV.mueble.nombre + ", ("        + objV.mueble.categoria.nombre 
+                    + ") | Total: $"  + objV.total
+
+                    let elemento = new Option(texto, objC.codigo);
+
+                    lista.add(elemento)
+                }
+            }
+
+        }
+
+    },
 
     // método para iniciar o reiniciar el formulario
     inicializar: function () {
 
         // reinicia el formulario
-        document.getElementById("form").reset();
+        document.getElementById('form').reset();
 
         // asigna el próximo código
-        document.getElementById("codigo").value = this.proximoId;
+        document.getElementById('codigo').value = this.proximoId;
 
         // focaliza el campo nombre
-        document.getElementById("nombre").focus()
+        document.getElementById('nombre').focus()
     },
 
 
@@ -256,7 +294,7 @@ const cliente = {
     seleccionar: function () {
 
         // se toma el código del cliente seleccionado desde el select
-        let codigo = document.getElementById('lista').value;
+        let codigo = parseInt(document.getElementById('lista').value);
 
         // se itera sobre el arreglo para encontrar el cliente
         for (let objCliente of this.clientes) {
