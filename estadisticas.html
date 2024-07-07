@@ -4,12 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>Estadísticas | Mueblería</title>
-
-
     <script src="dominio/estadistica.js"></script>
-
     <script src="dominio/memoria.js"></script>
-
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 
@@ -17,45 +13,40 @@
     <header>
         <div class="enlaces_clientes">
             <a href="index.html">Inicio</a>
-            <a href="muebles.html">Muebles</a>
             <a href="categorias.html">Categorias</a>
-            <a href="ventas.html">Ventas</a>
+            <a href="muebles.html">Muebles</a>
             <a href="clientes.html">Clientes</a>
+            <a href="ventas.html">Ventas</a>
         </div>
     </header>
-    <section class="section">
-        <div class="logo">
-            <h2>Estadística de ventas</h2>
-        </div>
-        <form id="dep">
+    <main>
+        <h2>Estadísticas</h2>
+        <form id="dep" class="estad_form">
+            <div class="botones">
+                <button type="button" class="btn_total_recaudado" onclick="estadistica.totalRecaudado()">Total
+                    Recaudado</button>
 
-            <section>
-                <div class="botones">
-                    <button type="button" class="btn_total_recaudado" onclick="estadistica.totalRecaudado()">Total
-                        Recaudado</button>
+                <button type="button" class="btn_muebles_stock" onclick="estadistica.listarMueblesConStock()">Muebles
+                    con Stock</button>
 
-                    <button type="button" class="btn_muebles_stock"
-                        onclick="estadistica.listarMueblesConStock()">Muebles con Stock</button>
-
-                    <button type="button" class="btn_muebles_mas_vendidos"
-                        onclick="estadistica.muebleMasVendido()">Mueble(s) Más Vendido(s)</button>
-                </div>
-            </section>
+                <button type="button" class="btn_muebles_mas_vendidos"
+                    onclick="estadistica.muebleMasVendido()">Mueble(s) Más Vendido(s)</button>
+            </div>
         </form>
-        <form>
+        <form class="estad_form">
             <div class="listado">
                 <select id="lista" size="8"></select>
             </div>
-            <div class="listado">
+            <div class="listado_fecha">
                 <label>Ventas por Fecha</label>
                 <input type="date" id="fechaVenta">
-                <input type="button" onclick="estadistica.listarVentasPorFecha()">
+                <input type="button" value="Buscar" onclick="estadistica.listarVentasPorFecha()">
             </div>
-            <div>
+            <div class="campos">
                 <select id="ventasporfecha" size="8"></select>
             </div>
         </form>
-    </section>
+    </main>
 </body>
 
 </html>

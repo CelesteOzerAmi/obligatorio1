@@ -198,7 +198,7 @@ const cliente = {
             // mensaje de confirmación
             alert("Cliente eliminado con éxito")
         } else {
-            alert("código incorrecto")
+            alert("Seleccione el cliente a eliminar")
         };
 
 

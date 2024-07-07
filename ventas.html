@@ -22,67 +22,48 @@
             <a href="estadisticas.html">Estadísticas</a>
         </div>
     </header>
-    <section class="section">
-
+    <main>
+        <h2>Ventas</h2>
         <form id="form" class="ventas_form">
+            <div class="campos" id="campos">
+                <label>Código de venta</label>
+                <input type="text" id="codigo" class="desactivado" disabled>
 
-            <div class="logo">
-                <h2>Ventas</h2>
+                <label>Fecha</label>
+                <input type="date" id="fecha">
+
+                <label for="cliente">Cliente</label>
+                <select id="cliente"></select>
+
+                <label for="categoria">Categoría</label>
+                <select id="categoria" onchange="venta.listarMuebles()"></select>
+
+                <label for="mueble">Mueble</label>
+                <select id="mueble" onchange="venta.buscarMueble(), venta.calcularTotal()"></select>
+
+                <label for="datos">Detalle</label>
+                <input type="text" id="datos" disabled>
+
+                <label>Cantidad</label>
+                <input type="text" id="cantidad" onchange="venta.validarStock(), venta.calcularTotal()">
+
+                <label>Monto total ($)</label>
+                <input type="text" id="total" disabled>
             </div>
-            <section>
-
-                <div class="campos" id="campos">
-
-                    <label>Código de venta</label>
-                    <input type="text" id="codigo" class="desactivado" disabled>
-
-                    <label>Fecha</label>
-                    <input type="date" id="fecha">
-
-                    <label for="cliente">Cliente</label>
-                    <select id="cliente"></select>
-
-                    <label for="categoria">Categoría</label>
-                    <select id="categoria" onchange="venta.listarMuebles()"></select>
-
-                    <label for="mueble">Mueble</label>
-                    <select id="mueble" onchange="venta.buscarMueble(), venta.calcularTotal()"></select>
-
-                    <label for="datos">Detalle</label>
-                    <input type="text" id="datos" disabled>
-
-                    <label>Cantidad</label>
-                    <input type="text" id="cantidad" onchange="venta.validarStock(), venta.calcularTotal()">
-
-                    <label>Monto total ($)</label>
-                    <input type="text" id="total" disabled>
-
-                </div>
-
-                <div class="botones">
-
-                    <button type="button" class="btn_agregar" onclick="venta.agregar()">Agregar</button>
-
-                    <button type="button" class="btn_eliminar" onclick="venta.eliminar()">Eliminar</button>
-
-                    <button type="button" class="btn_limpiar" onclick="venta.inicializar()">Limpiar cajas</button>
-
-                </div>
-
-            </section>
-
+            <div class="botones">
+                <button type="button" class="btn_agregar" onclick="venta.agregar()">Agregar</button>
+                <button type="button" class="btn_eliminar" onclick="venta.eliminar()">Eliminar</button>
+                <button type="button" class="btn_limpiar" onclick="venta.inicializar()">Limpiar cajas</button>
+            </div>
         </form>
-
         <div class="listado">
-
             <select id="lista" size="8" onchange="venta.seleccionar()"></select>
-            <br>
-            <button onclick="venta.ordenar('codigo')">Ordenar por Código</button>
-            <button onclick="venta.ordenar('fecha')">Ordenar por Fecha</button>
         </div>
-
-    </section>
-
+        <div>
+            <button class="boton" onclick="venta.ordenar('codigo')">Ordenar por Código</button>
+            <button class="boton" onclick="venta.ordenar('fecha')">Ordenar por Fecha</button>
+        </div>
+    </main>
 </body>
 
 </html>

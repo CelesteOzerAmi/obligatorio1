@@ -2,8 +2,8 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8"> 
-    <title>Muebles | Mueblería</title> 
+    <meta charset="utf-8">
+    <title>Muebles | Mueblería</title>
 
     <script src="dominio/mueble.js"></script>
 
@@ -23,12 +23,9 @@
             <a href="estadisticas.html">Estadisticas</a>
         </div>
     </header>
-    <section class="section">
-        <div class="logo">
-            <h2>Mueblería</h2>
-        </div>
+    <main>
+        <h2>Mueblería</h2>
         <form id="form" class="muebles_form">
-            <section>
                 <div class="campos">
                     <label>Código</label>
                     <input type="text" id="codigo" class="desactivado" disabled>
@@ -58,12 +55,11 @@
 
                     <button type="button" class="btn_limpiar" onclick="mueble.inicializar()">Limpiar cajas</button>
                 </div>
-            </section>
         </form>
         <div class="listado">
             <select id="lista" size="8" onchange="mueble.seleccionar()"></select>
         </div>
-    </section>
+    </main>
 </body>
 
 </html>

@@ -71,6 +71,10 @@ const venta = {
             };
         };
 
+        if (!fecha){
+            alert("Seleccione la fecha de la venta");
+            return
+        }
         // valida que se haya ingresado el código del mueble
         if (!codigo_cliente) {
             alert("Ingrese el cliente");
@@ -158,7 +162,7 @@ const venta = {
             alert("Venta eliminada con éxito");
 
         } else {
-            alert("Codigo incorrecto");
+            alert("Seleccione la venta a eliminar");
         }
 
         // lista nuevamente las ventas actualizadas
