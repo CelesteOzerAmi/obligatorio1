@@ -371,6 +371,8 @@ const venta = {
         memoria.escribir('muebles', this.muebles);
     },
 
+
+    // método para ordenar las ventas según atributo indicado
     ordenar: function(atr){
         this.ventas = this.ordenoBurbuja(this.ventas, atr);
         this.listar();

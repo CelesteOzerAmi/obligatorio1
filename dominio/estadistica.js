@@ -90,6 +90,7 @@ const estadistica = {
             this.lista.add(elemento);
         }
     },
+    
 
     // método para encontrar y mostrar el mueble más vendido
     muebleMasVendido: function () {
@@ -115,17 +116,34 @@ const estadistica = {
                 // agrega la opción al elemento select
                 this.lista.add(elemento);
             }
+        };
+
+        if (masVendido == 0) {
+            let texto = "No hay muebles vendidos"
+
+            // crea un nuevo elemento Option con el texto del total recaudado
+            let elemento = new Option(texto, "");
+
+            // agrega la opción al elemento select
+            this.lista.add(elemento);
         }
 
     },
 
+
+    // método para listar las ventas según fecha seleccionada
     listarVentasPorFecha: function () {
+
+        // tomo la fecha seleccionada en el elemento html
         let fecha = document.getElementById('fechaVenta').value;
 
+        // guardo el select 
         let listado = document.getElementById('ventasporfecha').options;
 
+        // reinicio el select
         listado.length = 0;
 
+        // por cada objeto venta se evalúa si la fecha coincide con la ingresada, para agregarlo en el select
         for (let objVenta of this.ventas) {
             if (objVenta.fecha == fecha) {
 
@@ -138,21 +156,23 @@ const estadistica = {
             }
         };
 
+        // si no hay ventas con la fecha ingresada, se indica en el select
         if (listado.length == 0) {
             let elemento = new Option("No se encontraron datos para la fecha seleccionada");
             listado.add(elemento)
         }
     },
 
+    // método para iniciar el calendario con la fecha de hoy
     inicializar: function () {
         let fechaHoy = new Date();
-        let dia = fechaHoy.getDate();
-        dia = dia.toString();
-        dia = (dia.length == 1) ? "0" + dia : dia;
-        let mes = fechaHoy.getMonth() + 1;
-        mes = mes.toString();
-        mes = (mes.length == 1) ? "0" + mes : mes;
-        let fecha = fechaHoy.getFullYear() + "-" + mes + "-" + dia;
+        let dia      = fechaHoy.getDate();
+        dia          = dia.toString();
+        dia          = (dia.length == 1) ? "0" + dia : dia;
+        let mes      = fechaHoy.getMonth() + 1;
+        mes          = mes.toString();
+        mes          = (mes.length == 1) ? "0" + mes : mes;
+        let fecha    = fechaHoy.getFullYear() + "-" + mes + "-" + dia;
 
         document.getElementById('fechaVenta').value = fecha;
     },
