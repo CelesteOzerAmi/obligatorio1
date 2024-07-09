@@ -99,7 +99,7 @@ const categoria = {
                     document.getElementById("nombre").focus();
                     return
                 };
-                
+
                 // mensaje de confirmación
                 alert("Categoría modificada con éxito!");
             };
@@ -139,7 +139,7 @@ const categoria = {
         // si la posición es mayor a -1, se elimina el categoria 
         if (pos >= 0) {
             this.categorias.splice(pos, 1);
-            
+
             // mensaje de confirmación
             alert("Categoría eliminada con éxito!");
         } else {
@@ -221,5 +221,24 @@ const categoria = {
                 document.getElementById('nombre').value = objCategoria.nombre;
             }
         }
+    },
+
+    // método para ordenar las ventas según atributo indicado
+    ordenar: function (atr) {
+        this.categorias = this.ordenoBurbuja(this.categorias, atr);
+        this.listar();
+    },
+
+    ordenoBurbuja: function (array, att) {
+        for (let i = 0; i < array.length - 1; i++) {
+            for (let j = 0; j < array.length - 1; j++) {
+                if (array[j][att] > array[j + 1][att]) {
+                    let aux = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = aux;
+                }
+            }
+        }
+        return array;
     }
 }

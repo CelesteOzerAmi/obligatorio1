@@ -310,5 +310,24 @@ const cliente = {
                 document.getElementById("direccion").value = objCliente.direccion;
             }
         }
+    },
+
+    // método para ordenar los clientes según atributo indicado
+    ordenar: function (atr) {
+        this.clientes = this.ordenoBurbuja(this.clientes, atr);
+        this.listar();
+    },
+
+    ordenoBurbuja: function (array, att) {
+        for (let i = 0; i < array.length - 1; i++) {
+            for (let j = 0; j < array.length - 1; j++) {
+                if (array[j][att] > array[j + 1][att]) {
+                    let aux = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = aux;
+                }
+            }
+        }
+        return array;
     }
 }

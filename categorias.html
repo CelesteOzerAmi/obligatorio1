@@ -48,8 +48,11 @@
             <select id="lista" size="8" onchange="categoria.seleccionar()"></select>
         </div>
 
-
         </form>
+        <div>
+            <button class="boton" onclick="categoria.ordenar('codigo')">Ordenar por Código</button>
+            <button class="boton" onclick="categoria.ordenar('nombre')">Ordenar por Nombre</button>
+        </div>
 
     </main>
 </body>
