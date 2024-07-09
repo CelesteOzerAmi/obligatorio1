@@ -2,11 +2,14 @@ const estadistica = {
 
     // método de inicio para cargar ventas, muebles y preparar la lista
     inicio: function () {
-        // lee las ventas desde la memoria y asignarlas a this.ventas
+        // lee las ventas desde la memoria y las asigna a this.ventas
         this.ventas = memoria.leer('ventas');
 
-        // lee los muebles desde la memoria y asignarlos a this.muebles
+        // lee los muebles desde la memoria y los asigna a this.muebles
         this.muebles = memoria.leer('muebles');
+
+        // lee los clientes desde la memoria y los asigna a this.clientes
+        this.clientes = memoria.leer('clientes');
 
         // toma el elemento con id 'lista' y lo asigna a this.lista
         this.lista = document.getElementById('lista');
@@ -23,6 +26,9 @@ const estadistica = {
 
         // llama al método muebleMasVendido para mostrar el mueble más vendido
         this.muebleMasVendido();
+
+        // llama al método listar para obtener los clientes 
+        this.listar();
 
         // llama al método listarVentasPorFecha para ordenar las ventas por fecha
         this.listarVentasPorFecha();
@@ -90,7 +96,7 @@ const estadistica = {
             this.lista.add(elemento);
         }
     },
-    
+
 
     // método para encontrar y mostrar el mueble más vendido
     muebleMasVendido: function () {
@@ -163,16 +169,70 @@ const estadistica = {
         }
     },
 
+    // método para listar los clientes en el select (html)
+    listar: function () {
+
+        // se toma el elemento select
+        let lista = document.getElementById('clientes').options;
+
+        // se eliminan los elementos existentes
+        lista.length = 0;
+
+        // se itera sobre el array de clientes y cada objeto se añade 
+        // como una nueva opción en el select 
+        for (let objCliente of this.clientes) {
+
+            let texto = objCliente.nombre;
+
+            let elemento = new Option(texto, objCliente.codigo);
+            lista.add(elemento)
+        }
+    },
+
+    // método para listar las ventas seleccionando un cliente
+    ventasporcliente: function () {
+
+        // tomo los elementos del html
+        let cliente = document.getElementById('clientes').value;
+        let lista = document.getElementById('ventasporcliente').options;
+
+        // reinicio la lista
+        lista.length = 0;
+
+        // por cada objeto venta de la clase ventas, se evalúa si coincide el cliente con el seleccionado
+        for (let objV of this.ventas) {
+
+            // si coincide, se añade los datos de la venta a la lista
+            if (objV.cliente.codigo == cliente) {
+                let texto = objV.cantidad + " " + objV.mueble.nombre +
+                    " (" + objV.mueble.categoria.nombre + "), $" + objV.total;
+
+                let elemento = new Option(texto);
+
+                lista.add(elemento);
+            }
+        };
+
+        // si no hay ventas para el cliente seleccionado, se indica en la lista
+        if (lista.length == 0) {
+            let elemento = new Option("No hay ventas para el cliente seleccionado");
+
+            lista.add(elemento);
+        }
+    },
+
+
+
     // método para iniciar el calendario con la fecha de hoy
     inicializar: function () {
         let fechaHoy = new Date();
-        let dia      = fechaHoy.getDate();
-        dia          = dia.toString();
-        dia          = (dia.length == 1) ? "0" + dia : dia;
-        let mes      = fechaHoy.getMonth() + 1;
-        mes          = mes.toString();
-        mes          = (mes.length == 1) ? "0" + mes : mes;
-        let fecha    = fechaHoy.getFullYear() + "-" + mes + "-" + dia;
+        let dia = fechaHoy.getDate();
+        dia = dia.toString();
+        dia = (dia.length == 1) ? "0" + dia : dia;
+        let mes = fechaHoy.getMonth() + 1;
+        mes = mes.toString();
+        mes = (mes.length == 1) ? "0" + mes : mes;
+        let fecha = fechaHoy.getFullYear() + "-" + mes + "-" + dia;
 
         document.getElementById('fechaVenta').value = fecha;
     },

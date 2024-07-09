@@ -63,8 +63,7 @@ main {
 
     .enlaces {
         display: flex;
-        width: 35%;
-        gap: 10px;
+        width: 60%;
         justify-content: space-evenly;
 
         a {
