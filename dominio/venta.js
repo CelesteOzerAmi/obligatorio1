@@ -298,28 +298,15 @@ const venta = {
                 document.getElementById('fecha').value     = objVenta.fecha;
                 document.getElementById('cliente').value   = objVenta.cliente.codigo;
                 document.getElementById('categoria').value = objVenta.mueble.categoria.codigo;
+                this.listarMuebles();
                 document.getElementById('mueble').value    = objVenta.mueble.codigo;
-                this.buscarMueble();
+                document.getElementById('datos').value     = objVenta.mueble.descripcion
                 document.getElementById('cantidad').value  = objVenta.cantidad;
                 document.getElementById('total').value     = objVenta.total;
             }
         }
     },
 
-    // método para buscar el mueble seleccionado y mostrar sus detalles en el formulario
-    buscarMueble: function () {
-        // toma el código del mueble desde el campo de mueble en el formulario
-        let codigo = parseInt(document.getElementById('mueble').value);
-        // itera sobre el arreglo de muebles para encontrar el mueble con el código correspondiente
-        for (let objM of this.muebles) {
-            if (objM.codigo == codigo) {
-
-                // asigna el objeto mueble encontrado a la propiedad muebleSel y muestra sus detalles
-                this.muebleSel = objM;
-                document.getElementById('datos').value = objM.descripcion;
-            };
-        };
-    },
 
     // método para buscar un cliente
     buscarCliente: function (codigo) {
