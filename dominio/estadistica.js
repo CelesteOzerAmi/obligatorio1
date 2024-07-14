@@ -183,6 +183,10 @@ const estadistica = {
         // se eliminan los elementos existentes
         lista.length = 0;
 
+        let elementoVacio = new Option("Seleccione un cliente");
+
+        lista.add(elementoVacio);
+
         // se itera sobre el array de clientes y cada objeto se añade 
         // como una nueva opción en el select 
         for (let objCliente of this.clientes) {

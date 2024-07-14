@@ -236,34 +236,6 @@ const cliente = {
         }
     },
 
-    // método para listar las ventas por cliente
-    listarVentas: function () {
-        // tomo el select con id ventas desde el html
-        let lista = document.getElementById('ventas').options;
-
-        // reinicio la lista
-        lista.length = 0;
-
-        // se itera cada cliente para encontrar las ventas por cliente
-        for (let objC of this.clientes) {
-            for (let objV of this.ventas) {
-
-                // por cada venta del cliente, se añade un elemento a la lista
-                if (objV.cliente.codigo == objC.codigo) {
-
-                    let texto = "Cliente: " + objC.nombre        + " | Venta: " + objV.fecha + ", " +
-                    objV.cantidad     + " " + objV.mueble.nombre + ", ("        + objV.mueble.categoria.nombre 
-                    + ") | Total: $"  + objV.total
-
-                    let elemento = new Option(texto, objC.codigo);
-
-                    lista.add(elemento)
-                }
-            }
-
-        }
-
-    },
 
     // método para iniciar o reiniciar el formulario
     inicializar: function () {

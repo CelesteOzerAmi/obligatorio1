@@ -155,8 +155,11 @@ main {
     width: 30%;
     display: flex;
     justify-content: space-evenly;
-    margin-top: 2%;
+    align-items: center;
+    margin-top: 1%;
     margin-bottom: 1%;
+    padding-top: 1%;
+    border-top: 1px solid gray;
 
     select {
         width: 100%;
@@ -175,8 +178,40 @@ main {
         border: 1px solid gray;
         border-radius: 5px;
     }
+}
 
-    ;
+.listado_cliente {
+
+    box-sizing: border-box;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-top: 1%;
+    border-top: 1px solid gray;
+    
+    label {
+        font-size: large;
+    }
+
+    input {
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 5px;
+    }
+    .clientes {
+
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 5px;
+
+    }
 }
 
 .lista {

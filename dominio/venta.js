@@ -153,7 +153,7 @@ const venta = {
                 codMueble  = this.ventas[i].mueble.codigo;
                 cantMueble = this.ventas[i].cantidad;
             }
-        }
+        };
 
         // si se encontró la venta, la elimina del arreglo y actualiza el stock del mueble correspondiente
         if (posicion >= 0) {
@@ -163,7 +163,7 @@ const venta = {
 
         } else {
             alert("Seleccione la venta a eliminar");
-        }
+        };
 
         // lista nuevamente las ventas actualizadas
         this.listar();

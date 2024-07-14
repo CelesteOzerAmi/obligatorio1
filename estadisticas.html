@@ -35,22 +35,27 @@
         </form>
         <form class="estad_form">
             <div class="listado">
-                <select id="lista" size="8"></select>
+                <select id="lista" size="5"></select>
             </div>
             <div class="listado_fecha">
-                <label>Ventas por Fecha</label>
+                <label>Ventas por fecha</label>
                 <input type="date" id="fechaVenta">
                 <input type="button" value="Buscar" onclick="estadistica.listarVentasPorFecha()">
             </div>
             <div class="campos">
-                <select id="ventasporfecha" size="8"></select>
+                <select id="ventasporfecha" size="6"></select>
             </div>
         </form>
-        <div>
-            <select id="clientes"></select>
-            <input type="button" value="listar" onclick="estadistica.ventasporcliente()">
-            <select id="ventasporcliente" size="8"></select>
-        </div>
+        <form class="estad_form">
+            <div class="listado_cliente">
+                <label>Ventas por cliente</label>
+                <select id="clientes" class="clientes"></select>
+                <input type="button" value="Listar" onclick="estadistica.ventasporcliente()">
+            </div>
+            <div class="listado">
+                <select id="ventasporcliente" size="7"></select>
+            </div>
+        </form>
     </main>
 </body>
 
