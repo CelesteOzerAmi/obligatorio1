@@ -150,7 +150,7 @@ const venta = {
         for (let i = 0; i < this.ventas.length; i++) {
             if (this.ventas[i].codigo == codigo) {
                 posicion   = i;
-                codMueble  = this.ventas[i].mueble;
+                codMueble  = this.ventas[i].mueble.codigo;
                 cantMueble = this.ventas[i].cantidad;
             }
         }

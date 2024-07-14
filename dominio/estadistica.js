@@ -161,6 +161,11 @@ const estadistica = {
                 listado.add(elemento);
             }
         };
+        
+        if(fecha == ""){
+            let elemento = new Option("Seleccione una fecha");
+            listado.add(elemento)
+        };
 
         // si no hay ventas con la fecha ingresada, se indica en el select
         if (listado.length == 0) {
