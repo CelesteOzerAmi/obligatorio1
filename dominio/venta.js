@@ -299,7 +299,7 @@ const venta = {
                 document.getElementById('cliente').value   = objVenta.cliente.codigo;
                 document.getElementById('categoria').value = objVenta.mueble.categoria.codigo;
                 this.listarMuebles();
-                document.getElementById('datos').value     = objM.descripcion;
+                document.getElementById('datos').value     = objVenta.mueble.descripcion;
                 document.getElementById('mueble').value    = objVenta.mueble.codigo;
                 document.getElementById('cantidad').value  = objVenta.cantidad;
                 document.getElementById('total').value     = objVenta.total;
