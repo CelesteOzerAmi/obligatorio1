@@ -15,6 +15,7 @@ const estadistica = {
         this.lista = document.getElementById('lista');
 
         this.inicializar();
+
         // llama al método limpiarLista para vaciar la lista
         this.limpiarLista();
 
